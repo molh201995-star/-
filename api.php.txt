@@ -1,0 +1,89 @@
+<?php
+
+header('Content-Type: application/json; charset=utf-8');
+
+$host = "sql206.infinityfree.com";
+$db   = "if0_42940498_fromdata";
+$user = "if0_42940498";
+$pass = "mjtm9595";
+
+try {
+    $pdo = new PDO(
+        "mysql:host=$host;dbname=$db;charset=utf8mb4",
+        $user,
+        $pass,
+        [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ]
+    );
+
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    if (!$data) {
+        echo json_encode([
+            "success" => false,
+            "message" => "لم تصل البيانات"
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    $sql = "INSERT INTO forms (
+        `الرتبة`,
+        `الرقم الإحصائي`,
+        `الصنف`,
+        `الاسم الكامل واللقب`,
+        `اسم الأم الثلاثي`,
+        `اسم الزوجة`,
+        `عدد الأطفال`,
+        `محل الولادة`,
+        `تاريخ التولد`,
+        `عنوان السكن الحالي`,
+        `أقرب نقطة دالة`,
+        `أمر التعيين`,
+        `تاريخ أمر التعيين`,
+        `أمر الترقية`,
+        `تاريخ أمر الترقية`,
+        `اسم المختار`,
+        `رقم الهاتف`
+    ) VALUES (
+        :rank, :stat, :class, :fullname, :mother, :wife,
+        :children, :birthplace, :birthdate, :address, :point,
+        :appointment, :appointment_date, :promotion,
+        :promotion_date, :mukhtar, :phone
+    )";
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        ':rank' => $data['الرتبة'] ?? '',
+        ':stat' => $data['الرقم الإحصائي'] ?? '',
+        ':class' => $data['الصنف'] ?? '',
+        ':fullname' => $data['الاسم الكامل واللقب'] ?? '',
+        ':mother' => $data['اسم الأم الثلاثي'] ?? '',
+        ':wife' => $data['اسم الزوجة'] ?? '',
+        ':children' => $data['عدد الأطفال'] ?? '',
+        ':birthplace' => $data['محل الولادة'] ?? '',
+        ':birthdate' => $data['تاريخ التولد'] ?? '',
+        ':address' => $data['عنوان السكن الحالي'] ?? '',
+        ':point' => $data['أقرب نقطة دالة'] ?? '',
+        ':appointment' => $data['أمر التعيين'] ?? '',
+        ':appointment_date' => $data['تاريخ أمر التعيين'] ?? '',
+        ':promotion' => $data['أمر الترقية'] ?? '',
+        ':promotion_date' => $data['تاريخ أمر الترقية'] ?? '',
+        ':mukhtar' => $data['اسم المختار'] ?? '',
+        ':phone' => $data['رقم الهاتف'] ?? ''
+    ]);
+
+    echo json_encode([
+        "success" => true,
+        "message" => "تم حفظ البيانات بنجاح"
+    ], JSON_UNESCAPED_UNICODE);
+
+} catch (Exception $e) {
+
+    echo json_encode([
+        "success" => false,
+        "message" => "حدث خطأ في الاتصال أو حفظ البيانات"
+    ], JSON_UNESCAPED_UNICODE);
+}
+?>
