@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +36,7 @@ body {
 
 .header p {
     margin: 8px 0 0;
-    font-size: 15px;
+    font-size: 16px;
 }
 
 .form-box {
@@ -59,7 +60,6 @@ label {
 }
 
 input,
-select,
 textarea {
     width: 100%;
     padding: 15px;
@@ -72,7 +72,6 @@ textarea {
 }
 
 input:focus,
-select:focus,
 textarea:focus {
     border-color: #1976d2;
     background: white;
@@ -113,7 +112,6 @@ button {
 
 .submit-btn:disabled {
     opacity: 0.6;
-    cursor: not-allowed;
 }
 
 .message {
@@ -139,6 +137,7 @@ button {
 }
 
 @media (max-width: 500px) {
+
     body {
         padding: 10px;
     }
@@ -156,7 +155,6 @@ button {
     }
 
     input,
-    select,
     textarea {
         font-size: 17px;
     }
@@ -167,18 +165,181 @@ button {
 <body>
 
 <div class="header">
+
     <h1>📋 استمارة المعلومات الشخصية</h1>
+
     <p>يرجى إدخال المعلومات بشكل صحيح</p>
+
 </div>
+
 
 <div class="form-box">
 
-<form id="myForm">
+<form
+    id="myForm"
+    action="https://api.web3forms.com/submit"
+    method="POST"
+>
 
-    <!-- مفتاح Web3Forms -->
-    <input type="hidden"
-           name="access_key"
-           value="111bf162-ed5d-45ad-bcca-5625b365e74c">
+    <!-- Web3Forms Access Key -->
+    <input
+        type="hidden"
+        name="access_key"
+        value="111bf162-ed5d-45ad-bcca-5625b365e74c"
+    >
 
-    <input type="hidden"
-           name="subject
+    <!-- عنوان الرسالة -->
+    <input
+        type="hidden"
+        name="subject"
+        value="استمارة معلومات شخصية جديدة"
+    >
+
+    <!-- اسم الموقع -->
+    <input
+        type="hidden"
+        name="from_name"
+        value="استمارة المعلومات الشخصية"
+    >
+
+    <!-- حماية من الرسائل المزعجة -->
+    <input
+        type="checkbox"
+        name="botcheck"
+        style="display:none;"
+    >
+
+
+    <!-- 1 -->
+    <div class="field">
+        <label>الرتبة</label>
+
+        <input
+            type="text"
+            name="الرتبة"
+            required
+        >
+    </div>
+
+
+    <!-- 2 -->
+    <div class="field">
+        <label>الرقم الإحصائي</label>
+
+        <input
+            type="text"
+            name="الرقم_الإحصائي"
+            required
+        >
+    </div>
+
+
+    <!-- 3 -->
+    <div class="field">
+        <label>الصنف</label>
+
+        <input
+            type="text"
+            name="الصنف"
+            required
+        >
+    </div>
+
+
+    <!-- 4 -->
+    <div class="field">
+        <label>الاسم الكامل واللقب</label>
+
+        <input
+            type="text"
+            name="الاسم_الكامل_واللقب"
+            required
+        >
+    </div>
+
+
+    <!-- 5 -->
+    <div class="field">
+        <label>اسم الأم الثلاثي</label>
+
+        <input
+            type="text"
+            name="اسم_الأم_الثلاثي"
+            required
+        >
+    </div>
+
+
+    <!-- 6 -->
+    <div class="field">
+        <label>اسم الزوجة</label>
+
+        <input
+            type="text"
+            name="اسم_الزوجة"
+        >
+    </div>
+
+
+    <!-- 7 -->
+    <div class="field">
+        <label>عدد الأطفال</label>
+
+        <input
+            type="number"
+            name="عدد_الأطفال"
+            min="0"
+        >
+    </div>
+
+
+    <!-- 8 -->
+    <div class="field">
+        <label>محل الولادة</label>
+
+        <input
+            type="text"
+            name="محل_الولادة"
+            required
+        >
+    </div>
+
+
+    <!-- 9 -->
+    <div class="field">
+        <label>تاريخ التولد</label>
+
+        <input
+            type="date"
+            name="تاريخ_التولد"
+            required
+        >
+    </div>
+
+
+    <!-- 10 -->
+    <div class="field">
+        <label>عنوان السكن الحالي</label>
+
+        <textarea
+            name="عنوان_السكن_الحالي"
+            required
+        ></textarea>
+    </div>
+
+
+    <!-- 11 -->
+    <div class="field">
+        <label>أقرب نقطة دالة</label>
+
+        <input
+            type="text"
+            name="أقرب_نقطة_دالة"
+            required
+        >
+    </div>
+
+
+    <!-- 12 -->
+    <div class="field">
+        <label>أ
