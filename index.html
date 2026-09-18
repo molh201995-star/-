@@ -1,542 +1,65 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>استمارة المعلومات الشخصية</title>
+<title>اختبار</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
-
-html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    min-height: 100%;
-}
-
-body {
-    font-family: Arial, Tahoma, sans-serif;
+    font-family: Arial;
     background: #eaf4ff;
-    color: #222;
-    padding: 15px;
+    padding: 20px;
 }
 
-.container {
-    width: 100%;
-    max-width: 650px;
-    margin: 0 auto;
-}
-
-/* الهيدر */
-.header {
+h1 {
     background: #1976d2;
     color: white;
-    text-align: center;
-    padding: 25px 15px;
+    padding: 25px;
     border-radius: 15px;
-    margin-bottom: 20px;
+    text-align: center;
 }
 
-.header .icon {
-    font-size: 50px;
-}
-
-.header h1 {
-    font-size: 25px;
-    margin: 10px 0;
-}
-
-.header p {
-    font-size: 17px;
-    margin: 5px 0;
-}
-
-/* الاستمارة */
-.form-box {
-    display: block;
-    width: 100%;
+form {
     background: white;
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 3px 12px rgba(0,0,0,0.10);
 }
 
-/* الحقول */
-.field {
+label {
     display: block;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-.field label {
-    display: block;
-    width: 100%;
-    margin-bottom: 7px;
-    font-size: 16px;
     font-weight: bold;
-    color: #333;
+    margin: 15px 0 5px;
 }
 
-.field input {
-    display: block;
+input {
     width: 100%;
-    height: 52px;
-    padding: 10px 14px;
-    border: 1px solid #bbb;
-    border-radius: 10px;
-    background: #fff;
-    font-size: 16px;
-    direction: rtl;
-    outline: none;
-}
-
-.field input:focus {
-    border: 2px solid #1976d2;
-}
-
-/* الأزرار */
-button {
-    display: block;
-    width: 100%;
-    height: 55px;
-    border: 0;
-    border-radius: 10px;
+    height: 50px;
     font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.edit {
-    background: #ffc107;
-    color: #000;
-    margin-top: 5px;
-}
-
-.send {
-    background: #2e7d32;
-    color: white;
-    margin-top: 12px;
-}
-
-.send:disabled {
-    opacity: 0.6;
-}
-
-/* الرسائل */
-.message {
-    display: none;
-    width: 100%;
-    padding: 15px;
-    margin-top: 15px;
-    border-radius: 10px;
-    text-align: center;
-    font-weight: bold;
-}
-
-.success {
-    background: #d4edda;
-    color: #155724;
-}
-
-.error {
-    background: #f8d7da;
-    color: #721c24;
-}
-
-/* الموبايل */
-@media (max-width: 500px) {
-
-    body {
-        padding: 10px;
-    }
-
-    .header {
-        padding: 22px 10px;
-    }
-
-    .header h1 {
-        font-size: 22px;
-    }
-
-    .header p {
-        font-size: 15px;
-    }
-
-    .form-box {
-        padding: 15px;
-    }
+    padding: 10px;
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<h1>استمارة المعلومات الشخصية</h1>
 
-    <!-- الهيدر -->
-    <div class="header">
+<form>
 
-        <div class="icon">📋</div>
+<label>الرتبة</label>
+<input type="text">
 
-        <h1>استمارة المعلومات الشخصية</h1>
+<label>الرقم الإحصائي</label>
+<input type="text">
 
-        <p>يرجى إدخال المعلومات بشكل صحيح</p>
+<label>الاسم الكامل</label>
+<input type="text">
 
-    </div>
+<label>رقم الهاتف</label>
+<input type="tel">
 
-
-    <!-- صندوق الاستمارة -->
-    <div class="form-box">
-
-        <form id="myForm">
-
-            <!-- مفتاح Web3Forms -->
-            <input
-                type="hidden"
-                name="access_key"
-                value="6f6a7353-8b77-4b82-8418-7b447814b7cc"
-            >
-
-            <input
-                type="hidden"
-                name="subject"
-                value="استمارة معلومات شخصية جديدة"
-            >
-
-            <input
-                type="hidden"
-                name="from_name"
-                value="استمارة المعلومات الشخصية"
-            >
-
-
-            <!-- الرتبة -->
-            <div class="field">
-                <label>الرتبة</label>
-                <input
-                    type="text"
-                    name="rank"
-                    required
-                >
-            </div>
-
-
-            <!-- الرقم الإحصائي -->
-            <div class="field">
-                <label>الرقم الإحصائي</label>
-                <input
-                    type="text"
-                    name="statistical_number"
-                    required
-                >
-            </div>
-
-
-            <!-- الصنف -->
-            <div class="field">
-                <label>الصنف</label>
-                <input
-                    type="text"
-                    name="category"
-                    required
-                >
-            </div>
-
-
-            <!-- الاسم -->
-            <div class="field">
-                <label>الاسم الكامل واللقب</label>
-                <input
-                    type="text"
-                    name="full_name"
-                    required
-                >
-            </div>
-
-
-            <!-- اسم الأم -->
-            <div class="field">
-                <label>اسم الأم الثلاثي</label>
-                <input
-                    type="text"
-                    name="mother_name"
-                    required
-                >
-            </div>
-
-
-            <!-- الزوجة -->
-            <div class="field">
-                <label>اسم الزوجة</label>
-                <input
-                    type="text"
-                    name="wife_name"
-                >
-            </div>
-
-
-            <!-- الأطفال -->
-            <div class="field">
-                <label>عدد الأطفال</label>
-                <input
-                    type="number"
-                    name="children"
-                    min="0"
-                >
-            </div>
-
-
-            <!-- الولادة -->
-            <div class="field">
-                <label>محل الولادة</label>
-                <input
-                    type="text"
-                    name="birth_place"
-                    required
-                >
-            </div>
-
-
-            <!-- تاريخ التولد -->
-            <div class="field">
-                <label>تاريخ التولد</label>
-                <input
-                    type="date"
-                    name="birth_date"
-                    required
-                >
-            </div>
-
-
-            <!-- السكن -->
-            <div class="field">
-                <label>عنوان السكن الحالي</label>
-                <input
-                    type="text"
-                    name="current_address"
-                    required
-                >
-            </div>
-
-
-            <!-- أقرب نقطة -->
-            <div class="field">
-                <label>أقرب نقطة دالة</label>
-                <input
-                    type="text"
-                    name="nearest_point"
-                >
-            </div>
-
-
-            <!-- أمر التعيين -->
-            <div class="field">
-                <label>أمر التعيين</label>
-                <input
-                    type="text"
-                    name="appointment_order"
-                >
-            </div>
-
-
-            <!-- تاريخ أمر التعيين -->
-            <div class="field">
-                <label>تاريخ أمر التعيين</label>
-                <input
-                    type="date"
-                    name="appointment_date"
-                >
-            </div>
-
-
-            <!-- أمر الترقية -->
-            <div class="field">
-                <label>أمر الترقية</label>
-                <input
-                    type="text"
-                    name="promotion_order"
-                >
-            </div>
-
-
-            <!-- تاريخ أمر الترقية -->
-            <div class="field">
-                <label>تاريخ أمر الترقية</label>
-                <input
-                    type="date"
-                    name="promotion_date"
-                >
-            </div>
-
-
-            <!-- اسم المختار -->
-            <div class="field">
-                <label>اسم المختار</label>
-                <input
-                    type="text"
-                    name="mukhtar"
-                >
-            </div>
-
-
-            <!-- الهاتف -->
-            <div class="field">
-                <label>رقم الهاتف</label>
-                <input
-                    type="tel"
-                    name="phone"
-                    required
-                >
-            </div>
-
-
-            <!-- زر التعديل -->
-            <button
-                type="button"
-                class="edit"
-                onclick="enableEditing()"
-            >
-                ✏️ تعديل الاستمارة
-            </button>
-
-
-            <!-- زر الإرسال -->
-            <button
-                type="submit"
-                class="send"
-                id="sendButton"
-            >
-                📤 إرسال الاستمارة
-            </button>
-
-
-            <!-- نجاح -->
-            <div
-                id="successMessage"
-                class="message success"
-            >
-                ✅ تم إرسال الاستمارة بنجاح
-            </div>
-
-
-            <!-- خطأ -->
-            <div
-                id="errorMessage"
-                class="message error"
-            >
-                ❌ حدث خطأ أثناء الإرسال
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
-
-
-<script>
-
-const form = document.getElementById("myForm");
-
-const sendButton =
-    document.getElementById("sendButton");
-
-const successMessage =
-    document.getElementById("successMessage");
-
-const errorMessage =
-    document.getElementById("errorMessage");
-
-
-/* إرسال الاستمارة */
-form.addEventListener("submit", async function(event) {
-
-    event.preventDefault();
-
-    successMessage.style.display = "none";
-    errorMessage.style.display = "none";
-
-    sendButton.disabled = true;
-    sendButton.innerText = "⏳ جاري الإرسال...";
-
-    const formData = new FormData(form);
-
-    try {
-
-        const response = await fetch(
-            "https://api.web3forms.com/submit",
-            {
-                method: "POST",
-                body: formData
-            }
-        );
-
-        const result = await response.json();
-
-        if (result.success) {
-
-            successMessage.style.display = "block";
-
-            sendButton.innerText =
-                "✅ تم الإرسال";
-
-            form.reset();
-
-        } else {
-
-            errorMessage.style.display = "block";
-
-            errorMessage.innerText =
-                "❌ فشل الإرسال: " +
-                (result.message || "خطأ غير معروف");
-
-            sendButton.disabled = false;
-
-            sendButton.innerText =
-                "📤 إرسال الاستمارة";
-        }
-
-    } catch (error) {
-
-        errorMessage.style.display = "block";
-
-        errorMessage.innerText =
-            "❌ تعذر الاتصال بالخادم";
-
-        sendButton.disabled = false;
-
-        sendButton.innerText =
-            "📤 إرسال الاستمارة";
-    }
-
-});
-
-
-/* زر التعديل */
-function enableEditing() {
-
-    const inputs =
-        form.querySelectorAll("input");
-
-    inputs.forEach(function(input) {
-
-        if (input.type !== "hidden") {
-            input.disabled = false;
-        }
-
-    });
-
-    alert("✏️ يمكنك تعديل المعلومات الآن");
-}
-
-</script>
+</form>
 
 </body>
 </html>
