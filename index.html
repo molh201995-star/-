@@ -8,6 +8,7 @@
 <title>استمارة المعلومات الشخصية</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -110,32 +111,6 @@ button {
     color: white;
 }
 
-.submit-btn:disabled {
-    opacity: 0.6;
-}
-
-.message {
-    display: none;
-    margin-top: 20px;
-    padding: 18px;
-    border-radius: 15px;
-    font-size: 17px;
-    font-weight: bold;
-    text-align: center;
-}
-
-.success {
-    display: block;
-    background: #d4edda;
-    color: #155724;
-}
-
-.error {
-    display: block;
-    background: #f8d7da;
-    color: #721c24;
-}
-
 @media (max-width: 500px) {
 
     body {
@@ -158,11 +133,15 @@ button {
     textarea {
         font-size: 17px;
     }
+
 }
+
 </style>
 </head>
 
+
 <body>
+
 
 <div class="header">
 
@@ -173,173 +152,353 @@ button {
 </div>
 
 
+
 <div class="form-box">
 
+
 <form
-    id="myForm"
-    action="https://api.web3forms.com/submit"
+    action="https://formspree.io/f/xeaoqdpo"
     method="POST"
 >
 
-    <!-- Web3Forms Access Key -->
-    <input
-        type="hidden"
-        name="access_key"
-        value="111bf162-ed5d-45ad-bcca-5625b365e74c"
-    >
 
-    <!-- عنوان الرسالة -->
-    <input
-        type="hidden"
-        name="subject"
-        value="استمارة معلومات شخصية جديدة"
-    >
+<!-- عنوان الرسالة -->
 
-    <!-- اسم الموقع -->
-    <input
-        type="hidden"
-        name="from_name"
-        value="استمارة المعلومات الشخصية"
-    >
-
-    <!-- حماية من الرسائل المزعجة -->
-    <input
-        type="checkbox"
-        name="botcheck"
-        style="display:none;"
-    >
+<input
+    type="hidden"
+    name="_subject"
+    value="استمارة معلومات شخصية جديدة"
+>
 
 
-    <!-- 1 -->
-    <div class="field">
-        <label>الرتبة</label>
+<!-- 1 -->
 
-        <input
-            type="text"
-            name="الرتبة"
-            required
-        >
-    </div>
+<div class="field">
 
+<label>الرتبة</label>
 
-    <!-- 2 -->
-    <div class="field">
-        <label>الرقم الإحصائي</label>
+<input
+    type="text"
+    name="الرتبة"
+    required
+>
 
-        <input
-            type="text"
-            name="الرقم_الإحصائي"
-            required
-        >
-    </div>
+</div>
 
 
-    <!-- 3 -->
-    <div class="field">
-        <label>الصنف</label>
 
-        <input
-            type="text"
-            name="الصنف"
-            required
-        >
-    </div>
+<!-- 2 -->
 
+<div class="field">
 
-    <!-- 4 -->
-    <div class="field">
-        <label>الاسم الكامل واللقب</label>
+<label>الرقم الإحصائي</label>
 
-        <input
-            type="text"
-            name="الاسم_الكامل_واللقب"
-            required
-        >
-    </div>
+<input
+    type="text"
+    name="الرقم_الإحصائي"
+    required
+>
+
+</div>
 
 
-    <!-- 5 -->
-    <div class="field">
-        <label>اسم الأم الثلاثي</label>
 
-        <input
-            type="text"
-            name="اسم_الأم_الثلاثي"
-            required
-        >
-    </div>
+<!-- 3 -->
 
+<div class="field">
 
-    <!-- 6 -->
-    <div class="field">
-        <label>اسم الزوجة</label>
+<label>الصنف</label>
 
-        <input
-            type="text"
-            name="اسم_الزوجة"
-        >
-    </div>
+<input
+    type="text"
+    name="الصنف"
+    required
+>
+
+</div>
 
 
-    <!-- 7 -->
-    <div class="field">
-        <label>عدد الأطفال</label>
 
-        <input
-            type="number"
-            name="عدد_الأطفال"
-            min="0"
-        >
-    </div>
+<!-- 4 -->
 
+<div class="field">
 
-    <!-- 8 -->
-    <div class="field">
-        <label>محل الولادة</label>
+<label>الاسم الكامل واللقب</label>
 
-        <input
-            type="text"
-            name="محل_الولادة"
-            required
-        >
-    </div>
+<input
+    type="text"
+    name="الاسم_الكامل_واللقب"
+    required
+>
+
+</div>
 
 
-    <!-- 9 -->
-    <div class="field">
-        <label>تاريخ التولد</label>
 
-        <input
-            type="date"
-            name="تاريخ_التولد"
-            required
-        >
-    </div>
+<!-- 5 -->
 
+<div class="field">
 
-    <!-- 10 -->
-    <div class="field">
-        <label>عنوان السكن الحالي</label>
+<label>اسم الأم الثلاثي</label>
 
-        <textarea
-            name="عنوان_السكن_الحالي"
-            required
-        ></textarea>
-    </div>
+<input
+    type="text"
+    name="اسم_الأم_الثلاثي"
+    required
+>
+
+</div>
 
 
-    <!-- 11 -->
-    <div class="field">
-        <label>أقرب نقطة دالة</label>
 
-        <input
-            type="text"
-            name="أقرب_نقطة_دالة"
-            required
-        >
-    </div>
+<!-- 6 -->
+
+<div class="field">
+
+<label>اسم الزوجة</label>
+
+<input
+    type="text"
+    name="اسم_الزوجة"
+>
+
+</div>
 
 
-    <!-- 12 -->
-    <div class="field">
-        <label>أ
+
+<!-- 7 -->
+
+<div class="field">
+
+<label>عدد الأطفال</label>
+
+<input
+    type="number"
+    name="عدد_الأطفال"
+    min="0"
+>
+
+</div>
+
+
+
+<!-- 8 -->
+
+<div class="field">
+
+<label>محل الولادة</label>
+
+<input
+    type="text"
+    name="محل_الولادة"
+    required
+>
+
+</div>
+
+
+
+<!-- 9 -->
+
+<div class="field">
+
+<label>تاريخ التولد</label>
+
+<input
+    type="date"
+    name="تاريخ_التولد"
+    required
+>
+
+</div>
+
+
+
+<!-- 10 -->
+
+<div class="field">
+
+<label>عنوان السكن الحالي</label>
+
+<textarea
+    name="عنوان_السكن_الحالي"
+    required
+></textarea>
+
+</div>
+
+
+
+<!-- 11 -->
+
+<div class="field">
+
+<label>أقرب نقطة دالة</label>
+
+<input
+    type="text"
+    name="أقرب_نقطة_دالة"
+    required
+>
+
+</div>
+
+
+
+<!-- 12 -->
+
+<div class="field">
+
+<label>أمر التعيين</label>
+
+<input
+    type="text"
+    name="أمر_التعيين"
+>
+
+</div>
+
+
+
+<!-- 13 -->
+
+<div class="field">
+
+<label>تاريخ أمر التعيين</label>
+
+<input
+    type="date"
+    name="تاريخ_أمر_التعيين"
+>
+
+</div>
+
+
+
+<!-- 14 -->
+
+<div class="field">
+
+<label>أمر الترقية</label>
+
+<input
+    type="text"
+    name="أمر_الترقية"
+>
+
+</div>
+
+
+
+<!-- 15 -->
+
+<div class="field">
+
+<label>تاريخ أمر الترقية</label>
+
+<input
+    type="date"
+    name="تاريخ_أمر_الترقية"
+>
+
+</div>
+
+
+
+<!-- 16 -->
+
+<div class="field">
+
+<label>اسم المختار</label>
+
+<input
+    type="text"
+    name="اسم_المختار"
+>
+
+</div>
+
+
+
+<!-- 17 -->
+
+<div class="field">
+
+<label>رقم الهاتف</label>
+
+<input
+    type="tel"
+    name="رقم_الهاتف"
+    inputmode="numeric"
+    placeholder="07xxxxxxxxx"
+    required
+>
+
+</div>
+
+
+
+<!-- الأزرار -->
+
+<div class="buttons">
+
+
+<button
+    type="button"
+    class="edit-btn"
+    onclick="enableEditing()"
+>
+
+✏️ تعديل الاستمارة
+
+</button>
+
+
+
+<button
+    type="submit"
+    class="submit-btn"
+>
+
+📤 إرسال الاستمارة
+
+</button>
+
+
+</div>
+
+
+</form>
+
+
+</div>
+
+
+
+<script>
+
+function enableEditing() {
+
+    const fields =
+        document.querySelectorAll(
+            "input:not([type='hidden']), textarea"
+        );
+
+    fields.forEach(function(field) {
+
+        field.disabled = false;
+
+        field.readOnly = false;
+
+    });
+
+    alert("✏️ يمكنك الآن تعديل بيانات الاستمارة");
+
+}
+
+</script>
+
+
+</body>
+
+</html>
