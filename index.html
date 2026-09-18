@@ -1,1 +1,255 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>استمارة المعلومات</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 15px;
+  font-family: Arial, Tahoma, sans-serif;
+  background: #eaf4ff;
+  color: #222;
+}
+
+.container {
+  max-width: 650px;
+  margin: auto;
+}
+
+/* العنوان */
+.header {
+  background: #1976d2;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
+.header .icon {
+  font-size: 45px;
+  margin-bottom: 8px;
+}
+
+.header h1 {
+  font-size: 21px;
+  margin: 5px 0;
+}
+
+.header p {
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+/* الحقول */
+.field {
+  margin-bottom: 12px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+input {
+  width: 100%;
+  height: 52px;
+  padding: 10px 14px;
+  border: 1px solid #bbb;
+  border-radius: 12px;
+  background: white;
+  font-size: 16px;
+  direction: rtl;
+  outline: none;
+}
+
+input:focus {
+  border: 2px solid #1565c0;
+}
+
+/* الأزرار */
+button {
+  width: 100%;
+  height: 56px;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.edit {
+  background: #ffc107;
+  color: black;
+}
+
+.send {
+  background: #2e7d32;
+  color: white;
+  margin-top: 12px;
+}
+
+#message {
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin-top: 15px;
+  min-height: 25px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="icon">📋</div>
+
+    <h1>استمارة المعلومات الشخصية</h1>
+
+    <p>يرجى إدخال المعلومات بشكل صحيح</p>
+  </div>
+
+  <form id="myForm">
+
+    <div class="field">
+      <label>الرتبة</label>
+      <input type="text" name="rank">
+    </div>
+
+    <div class="field">
+      <label>الرقم الإحصائي</label>
+      <input type="text" name="statistical_number">
+    </div>
+
+    <div class="field">
+      <label>الصنف</label>
+      <input type="text" name="category">
+    </div>
+
+    <div class="field">
+      <label>الاسم الكامل واللقب</label>
+      <input type="text" name="full_name">
+    </div>
+
+    <div class="field">
+      <label>اسم الأم الثلاثي</label>
+      <input type="text" name="mother_name">
+    </div>
+
+    <div class="field">
+      <label>اسم الزوجة</label>
+      <input type="text" name="wife_name">
+    </div>
+
+    <div class="field">
+      <label>عدد الأطفال</label>
+      <input type="number" name="children">
+    </div>
+
+    <div class="field">
+      <label>محل الولادة</label>
+      <input type="text" name="birth_place">
+    </div>
+
+    <div class="field">
+      <label>تاريخ التولد</label>
+      <input type="date" name="birth_date">
+    </div>
+
+    <div class="field">
+      <label>عنوان السكن الحالي</label>
+      <input type="text" name="current_address">
+    </div>
+
+    <div class="field">
+      <label>أقرب نقطة دالة</label>
+      <input type="text" name="nearest_point">
+    </div>
+
+    <div class="field">
+      <label>أمر التعيين</label>
+      <input type="text" name="appointment_order">
+    </div>
+
+    <div class="field">
+      <label>تاريخ أمر التعيين</label>
+      <input type="date" name="appointment_date">
+    </div>
+
+    <div class="field">
+      <label>أمر الترقية</label>
+      <input type="text" name="promotion_order">
+    </div>
+
+    <div class="field">
+      <label>تاريخ أمر الترقية</label>
+      <input type="date" name="promotion_date">
+    </div>
+
+    <div class="field">
+      <label>اسم المختار</label>
+      <input type="text" name="mukhtar">
+    </div>
+
+    <div class="field">
+      <label>رقم الهاتف</label>
+      <input type="tel" name="phone">
+    </div>
+
+    <button type="button" class="edit" onclick="editForm()">
+      ✏️ تعديل الاستمارة
+    </button>
+
+    <button type="submit" class="send">
+      📤 إرسال الاستمارة
+    </button>
+
+    <div id="message"></div>
+
+  </form>
+
+</div>
+
+<script>
+
+function editForm() {
+  document.querySelectorAll("input").forEach(function(input) {
+    input.disabled = false;
+  });
+
+  document.getElementById("message").innerText =
+    "يمكنك تعديل البيانات الآن";
+}
+
+/*
+  الإرسال إلى قاعدة البيانات سنضيفه بعد التأكد
+  أن الصفحة تفتح بشكل صحيح.
+*/
+
+document.getElementById("myForm").addEventListener("submit", function(e) {
+
+  e.preventDefault();
+
+  document.getElementById("message").innerText =
+    "تم الضغط على إرسال الاستمارة ✅";
+
+});
+
+</script>
+
+</body>
+</html>
