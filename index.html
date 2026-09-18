@@ -29,9 +29,12 @@ button { width: 100%; height: 56px; border: none; border-radius: 10px; font-size
     <p>يرجى إدخال المعلومات بشكل صحيح</p>
   </div>
 
-  <!-- هذا هو الرابط الصحيح والمفتاح الشغال مية بالمية -->
+  <!-- تم التعديل إلى المفتاح العام المباشر لمنع خطأ 405 -->
   <form action="https://web3forms.com" method="POST">
-    <input type="hidden" name="access_key" value="111bf162-ed5c-4cd3-a1bf-2ec0be306cfd">
+    <input type="hidden" name="access_key" value="6f6a7353-8b77-4b82-8418-7b447814b7cc">
+
+    <!-- حقل مخفي لكي تصل البيانات إلى بريدك الشخصي مباشرة -->
+    <input type="hidden" name="to_email" value="mjtm9595@gmail.com">
 
     <div class="field"><label>الرتبة</label><input type="text" name="rank"></div>
     <div class="field"><label>الرقم الإحصائي</label><input type="text" name="statistical_number"></div>
