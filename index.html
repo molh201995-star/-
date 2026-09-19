@@ -143,8 +143,8 @@ button{
 </div>
 
 <script>
-// الرابط الجديد تم تحديثه هنا وتفعيله
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyS47h_kR9_LtDmWmfn2cwDP6UsNWVdmlTMtXXHHFhAie1nck4tHUZfHk1-W32hWn3s/exec";
+// الرابط الجديد الخاص بك تم تحديثه هنا تلقائياً
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwVlf8VAV8pG_koA8lWCTLoPLlFjLxDhp7q4f3iuwpSc3mrwsEbTQTltyv7t8DjUleh/exec";
 
 // إدارة التسلسل في المتصفح
 let serial = Number(localStorage.getItem("serial") || 1);
@@ -174,7 +174,6 @@ document.getElementById("myForm").addEventListener(
     "submit",
     async function(e){
         e.preventDefault();
-
         updateDateTime();
 
         const form = e.target;
