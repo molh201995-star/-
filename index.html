@@ -26,8 +26,8 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
     التاريخ والوقت: <span id="datetime"></span>
 </div>
 
-<!-- تم تغيير طريقة الإرسال هنا لتكون مباشرة وإجبارية للسيرفر بدون تعقيدات البرمجة المخفية -->
-<form id="myForm" action="ضع_الرابط_هنا" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+<!-- تم تحويل طريقة الإرسال هنا لتكون مباشرة وإجبارية للسيرفر وتتخطى حظر المتصفح تماماً -->
+<form id="myForm" action="ضع_رابط_الـ_Web_App_الخاص_بجوجل_هنا" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
 
 <input type="hidden" name="التسلسل" id="hidden_serial">
 <input type="hidden" name="تاريخ ووقت الإرسال" id="hidden_datetime">
@@ -56,7 +56,7 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
 </form>
 </div>
 
-<!-- نافذة مخفية تمنع المتصفح من فتح صفحة بيضاء عند الإرسال وتجبره على البقاء في الاستمارة -->
+<!-- نافذة مخفية تجبر المتصفح على البقاء في الاستمارة وتمنع ظهور صفحة بيضاء عند الإرسال -->
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { handleResponse(); }"></iframe>
 
 <script>
