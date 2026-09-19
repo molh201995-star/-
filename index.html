@@ -55,8 +55,8 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
 </div>
 
 <script>
-// ⚠️ تم ربطه بسيرفر خارجي مدفوع ومفتوح لتخطي حظر الاستضافات المجانية تماماً
-const SERVER_URL = "https://jsonbin.io"; 
+// ⚠️ ضع هنا رابط ملف الـ PHP الخاص بك بدقة لتفادي خطأ 405
+const PHP_URL = "رابط_ملف_الـ_PHP_الخاص_بك_على_الاستضافة";
 
 let serial = Number(localStorage.getItem("serial") || 1);
 document.getElementById("serial").textContent = serial;
@@ -64,8 +64,9 @@ document.getElementById("hidden_serial").value = serial;
 
 function updateDateTime(){
     const now = new Date();
-    document.getElementById("datetime").textContent = now.toLocaleString("ar-IQ");
-    document.getElementById("hidden_datetime").value = now.toLocaleString("ar-IQ");
+    const timeString = now.toLocaleString("ar-IQ");
+    document.getElementById("datetime").textContent = timeString;
+    document.getElementById("hidden_datetime").value = timeString;
 }
 updateDateTime();
 setInterval(updateDateTime, 1000);
@@ -81,7 +82,7 @@ document.getElementById("myForm").addEventListener("submit", async function(e){
     
     const btn = document.getElementById("submitBtn");
     btn.disabled = true;
-    btn.textContent = "جاري الحفظ الفوري والسريع...";
+    btn.textContent = "جاري الحفظ والإرسال لوحدة الطبابة...";
 
     const form = e.target;
     const formData = new FormData(form);
@@ -89,26 +90,31 @@ document.getElementById("myForm").addEventListener("submit", async function(e){
     formData.forEach((value, key)=>{ data[key] = value; });
 
     try {
-        // الإرسال إلى سيرفر التخزين السحابي المباشر المتخطي لكل أنواع الحظر
-        await fetch("https://jsonbin.io", {
+        // إرسال البيانات بصيغة JSON القياسية للتوافق الكامل مع ملف PHP الخاص بك
+        const response = await fetch(PHP_URL, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
-                "X-Master-Key": "$2a$10$WnU67MvJvE6M6Tf8g7wGNeN8H7qD9K6m5mB7z6r6O6K6v6M6m6m6m" // مفتاح وصول آمن مخصص لك
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify(rowData)
+            body: JSON.stringify(data)
         });
 
-        alert("✅ مبروك يا غالي! تم إرسال الاستمارة وحفظ البيانات بنجاح تام!");
-        serial++;
-        localStorage.setItem("serial", serial);
-        form.reset();
-        document.getElementById("serial").textContent = serial;
-        document.getElementById("hidden_serial").value = serial;
-        updateDateTime();
+        const result = await response.json();
+
+        if (result.success) {
+            alert("✅ " + result.message);
+            serial++;
+            localStorage.setItem("serial", serial);
+            form.reset();
+            document.getElementById("serial").textContent = serial;
+            document.getElementById("hidden_serial").value = serial;
+            updateDateTime();
+        } else {
+            alert("❌ " + result.message);
+        }
 
     } catch (error) {
-        alert("❌ حدث خطأ في الشبكة، يرجى إعادة المحاولة");
+        alert("❌ حدث خطأ أثناء الاتصال بالخادم. يرجى التأكد من رفع ملف الـ HTML وملف الـ PHP داخل مجلد htdocs على نفس الاستضافة.");
         console.error(error);
     } finally {
         btn.disabled = false;
