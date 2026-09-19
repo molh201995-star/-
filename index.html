@@ -26,8 +26,8 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
     التاريخ والوقت: <span id="datetime"></span>
 </div>
 
-<!-- تم تحويل طريقة الإرسال هنا لتكون مباشرة وإجبارية للسيرفر وتتخطى حظر المتصفح تماماً -->
-<form id="myForm" action="ضع_رابط_الـ_Web_App_الخاص_بجوجل_هنا" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+<!-- تم ربطه برابط السيرفر الشغال الخاص بك مباشرة بطريقة الإرسال الإجبارية لتخطي الحظر -->
+<form id="myForm" action="https://script.google.com/macros/s/AKfycbwVlf8VAV8pG_koA8lWCTLoPLlFjLxDhp7q4f3iuwpSc3mrwsEbTQTltyv7t8DjUleh/exec" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
 
 <input type="hidden" name="التسلسل" id="hidden_serial">
 <input type="hidden" name="تاريخ ووقت الإرسال" id="hidden_datetime">
@@ -56,7 +56,7 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
 </form>
 </div>
 
-<!-- نافذة مخفية تجبر المتصفح على البقاء في الاستمارة وتمنع ظهور صفحة بيضاء عند الإرسال -->
+<!-- نافذة مخفية تجبر المتصفح على البقاء في الاستمارة وتمنع فتح صفحة بيضاء عند الإرسال -->
 <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { handleResponse(); }"></iframe>
 
 <script>
@@ -80,7 +80,7 @@ function enableEdit(){
 }
 
 function handleResponse() {
-    alert("✅ تم إرسال الاستمارة بنجاح وظهرت في جدول البيانات الرئيسي!");
+    alert("✅ تم إرسال الاستمارة بنجاح وظهرت في جدول البيانات!");
     serial++;
     localStorage.setItem("serial", serial);
     document.getElementById("serial").textContent = serial;
