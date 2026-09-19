@@ -1,33 +1,44 @@
 <?php
-
+// 1. ترويسات الأمان لمنع حظر المتصفحات (CORS) وتحديد صيغة JSON للرد
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json; charset=utf-8');
 
-$host = "sql206.infinityfree.com";
-$db   = "if0_42940498_fromdata";
-$user = "if0_42940498";
-$pass = "mjtm9595";
+// معالجة طلب الفحص التلقائي للمتصفحات
+if (\$_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    exit(0);
+}
+
+\$host = "sql206.infinityfree.com";
+\$db   = "if0_42940498_fromdata";
+\$user = "if0_42940498";
+\$pass = "mjtm9595";
 
 try {
-    $pdo = new PDO(
-        "mysql:host=$host;dbname=$db;charset=utf8mb4",
-        $user,
-        $pass,
+    \$pdo = new PDO(
+        "mysql:host=host;dbname=db;charset=utf8mb4",
+        \(user,\)pass,
         [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]
     );
 
-    $data = json_decode(file_get_contents("php://input"), true);
+    // استقبال النص القادم (JSON) وتحويله لمصفوفة PHP
+    \$data = json_decode(file_get_contents("php://input"), true);
 
-    if (!$data) {
+    if (!\$data) {
         echo json_encode([
             "success" => false,
-            "message" => "لم تصل البيانات"
+            "message" => "لم تصل البيانات أو الصيغة غير صحيحة"
         ], JSON_UNESCAPED_UNICODE);
         exit;
     }
 
-    $sql = "INSERT INTO forms (
+    // 2. تحديث أمر الـ SQL لإضافة (التسلسل) و (تاريخ ووقت الإرسال) بقاعدة البيانات
+    \$sql = "INSERT INTO forms (
+        `التسلسل`,
+        `تاريخ ووقت الإرسال`,
         `الرتبة`,
         `الرقم الإحصائي`,
         `الصنف`,
@@ -46,32 +57,35 @@ try {
         `اسم المختار`,
         `رقم الهاتف`
     ) VALUES (
-        :rank, :stat, :class, :fullname, :mother, :wife,
+        :serial, :dt, :rank, :stat, :class, :fullname, :mother, :wife,
         :children, :birthplace, :birthdate, :address, :point,
         :appointment, :appointment_date, :promotion,
         :promotion_date, :mukhtar, :phone
     )";
 
-    $stmt = $pdo->prepare($sql);
+    \$stmt = pdo->prepare(sql);
 
-    $stmt->execute([
-        ':rank' => $data['الرتبة'] ?? '',
-        ':stat' => $data['الرقم الإحصائي'] ?? '',
-        ':class' => $data['الصنف'] ?? '',
-        ':fullname' => $data['الاسم الكامل واللقب'] ?? '',
-        ':mother' => $data['اسم الأم الثلاثي'] ?? '',
-        ':wife' => $data['اسم الزوجة'] ?? '',
-        ':children' => $data['عدد الأطفال'] ?? '',
-        ':birthplace' => $data['محل الولادة'] ?? '',
-        ':birthdate' => $data['تاريخ التولد'] ?? '',
-        ':address' => $data['عنوان السكن الحالي'] ?? '',
-        ':point' => $data['أقرب نقطة دالة'] ?? '',
-        ':appointment' => $data['أمر التعيين'] ?? '',
-        ':appointment_date' => $data['تاريخ أمر التعيين'] ?? '',
-        ':promotion' => $data['أمر الترقية'] ?? '',
-        ':promotion_date' => $data['تاريخ أمر الترقية'] ?? '',
-        ':mukhtar' => $data['اسم المختار'] ?? '',
-        ':phone' => $data['رقم الهاتف'] ?? ''
+    // 3. ربط البيانات مع الحقول القادمة من الاستمارة الـ HTML
+    \$stmt->execute([
+        ':serial' => \$data['التسلسل'] ?? 0,
+        ':dt' => \$data['تاريخ ووقت الإرسال'] ?? '',
+        ':rank' => \$data['الرتبة'] ?? '',
+        ':stat' => \$data['الرقم الإحصائي'] ?? '',
+        ':class' => \$data['الصنف'] ?? '',
+        ':fullname' => \$data['الاسم الكامل واللقب'] ?? '',
+        ':mother' => \$data['اسم الأم الثلاثي'] ?? '',
+        ':wife' => \$data['اسم الزوجة'] ?? '',
+        ':children' => \$data['عدد الأطفال'] ?? 0,
+        ':birthplace' => \$data['محل الولادة'] ?? '',
+        ':birthdate' => \$data['تاريخ التولد'] ?? '',
+        ':address' => \$data['عنوان السكن الحالي'] ?? '',
+        ':point' => \$data['أقرب نقطة دالة'] ?? '',
+        ':appointment' => \$data['أمر التعيين'] ?? '',
+        ':appointment_date' => \$data['تاريخ أمر التعيين'] ?? '',
+        ':promotion' => \$data['أمر الترقية'] ?? '',
+        ':promotion_date' => \$data['تاريخ أمر الترقية'] ?? '',
+        ':mukhtar' => \$data['اسم المختار'] ?? '',
+        ':phone' => \$data['رقم الهاتف'] ?? ''
     ]);
 
     echo json_encode([
@@ -79,11 +93,11 @@ try {
         "message" => "تم حفظ البيانات بنجاح"
     ], JSON_UNESCAPED_UNICODE);
 
-} catch (Exception $e) {
-
+} catch (Exception \$e) {
+    // إرجاع رسالة الخطأ الحقيقية للمساعدة في الفحص
     echo json_encode([
         "success" => false,
-        "message" => "حدث خطأ في الاتصال أو حفظ البيانات"
+        "message" => "حدث خطأ في السيرفر: " . \$e->getMessage()
     ], JSON_UNESCAPED_UNICODE);
 }
 ?>
