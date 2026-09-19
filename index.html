@@ -26,7 +26,9 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
     التاريخ والوقت: <span id="datetime"></span>
 </div>
 
-<form id="myForm">
+<!-- توجيه الطلب كـ Form POST قياسي مجبر على اختراق جدار حماية الاستضافة المجانية -->
+<form id="myForm" action="رابط_ملف_الـ_PHP_الخاص_بك_على_الإنترنت" method="POST">
+
 <input type="hidden" name="التسلسل" id="hidden_serial">
 <input type="hidden" name="تاريخ ووقت الإرسال" id="hidden_datetime">
 
@@ -55,9 +57,6 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
 </div>
 
 <script>
-// ⚠️ ضع هنا رابط ملف الـ PHP المرفوع على استضافتك (مثال: https://yourdomain.com)
-const PHP_URL = "ضع_رابط_ملف_الـ_PHP_هنا";
-
 let serial = Number(localStorage.getItem("serial") || 1);
 document.getElementById("serial").textContent = serial;
 document.getElementById("hidden_serial").value = serial;
@@ -76,49 +75,11 @@ function enableEdit(){
     alert("الاستمارة أصبحت قابلة للتعديل");
 }
 
-document.getElementById("myForm").addEventListener("submit", async function(e){
-    e.preventDefault();
+document.getElementById("myForm").addEventListener("submit", function() {
     updateDateTime();
-    
-    const btn = document.getElementById("submitBtn");
-    btn.disabled = true;
-    btn.textContent = "جاري الإرسال إلى السيرفر...";
-
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key)=>{ data[key] = value; });
-
-    try {
-        const response = await fetch(PHP_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-
-        const result = await response.json();
-
-        if(result.success) {
-            alert("✅ " + result.message);
-            serial++;
-            localStorage.setItem("serial", serial);
-            form.reset();
-            document.getElementById("serial").textContent = serial;
-            document.getElementById("hidden_serial").value = serial;
-            updateDateTime();
-        } else {
-            alert("❌ " + result.message);
-        }
-
-    } catch (error) {
-        alert("❌ تعذر الوصول للسيرفر! إذا كنت تستخدم استضافة مجانية، يجب رفع ملف الـ HTML على نفس الاستضافة بجانب ملف الـ PHP لتجنب حظر النظام.");
-        console.error(error);
-    } finally {
-        btn.disabled = false;
-        btn.textContent = "📤 إرسال الاستمارة";
-    }
+    // زيادة التسلسل المحفوظ بالجهاز تلقائياً عند الإرسال
+    serial++;
+    localStorage.setItem("serial", serial);
 });
 </script>
 </body>
