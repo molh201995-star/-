@@ -55,8 +55,8 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
 </div>
 
 <script>
-// ⚠️ ضع هنا رابط ملف الـ PHP الخاص بك بدقة لتفادي خطأ 405
-const PHP_URL = "رابط_ملف_الـ_PHP_الخاص_بك_على_الاستضافة";
+// تم تغيير الرابط ليكون اسم الملف مباشرة لأن الاستمارة أصبحت داخل السيرفر نفسه
+const PHP_URL = "send.php";
 
 let serial = Number(localStorage.getItem("serial") || 1);
 document.getElementById("serial").textContent = serial;
@@ -82,7 +82,7 @@ document.getElementById("myForm").addEventListener("submit", async function(e){
     
     const btn = document.getElementById("submitBtn");
     btn.disabled = true;
-    btn.textContent = "جاري الحفظ والإرسال لوحدة الطبابة...";
+    btn.textContent = "جاري الحفظ الفوري بالخادم...";
 
     const form = e.target;
     const formData = new FormData(form);
@@ -90,7 +90,6 @@ document.getElementById("myForm").addEventListener("submit", async function(e){
     formData.forEach((value, key)=>{ data[key] = value; });
 
     try {
-        // إرسال البيانات بصيغة JSON القياسية للتوافق الكامل مع ملف PHP الخاص بك
         const response = await fetch(PHP_URL, {
             method: "POST",
             headers: {
@@ -114,7 +113,7 @@ document.getElementById("myForm").addEventListener("submit", async function(e){
         }
 
     } catch (error) {
-        alert("❌ حدث خطأ أثناء الاتصال بالخادم. يرجى التأكد من رفع ملف الـ HTML وملف الـ PHP داخل مجلد htdocs على نفس الاستضافة.");
+        alert("❌ حدث خطأ داخلي. تأكد أن ملف send.php موجود بجانب هذا الملف في htdocs.");
         console.error(error);
     } finally {
         btn.disabled = false;
