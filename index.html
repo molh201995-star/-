@@ -26,27 +26,59 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
     التاريخ والوقت: <span id="datetime"></span>
 </div>
 
-<form id="myForm">
-<input type="hidden" name="التسلسل" id="hidden_serial">
-<input type="hidden" name="تاريخ ووقت الإرسال" id="hidden_datetime">
+<!-- تم ربط الفورم برابط نموذج جوجل مباشرة واستخراج المعرفات الخاصة بالخانات -->
+<form id="myForm" action="https://google.com" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
 
-<label>الرتبة</label> <input type="text" name="الرتبة" required>
-<label>الرقم الإحصائي</label> <input type="text" name="الرقم الإحصائي" required>
-<label>الصنف</label> <input type="text" name="الصنف">
-<label>الاسم الكامل واللقب</label> <input type="text" name="الاسم الكامل واللقب" required>
-<label>اسم الأم الثلاثي</label> <input type="text" name="اسم الأم الثلاثي">
-<label>اسم الزوجة</label> <input type="text" name="اسم الزوجة">
-<label>عدد الأطفال</label> <input type="number" name="عدد الأطفال">
-<label>محل الولادة</label> <input type="text" name="محل الولادة">
-<label>تاريخ التولد</label> <input type="date" name="تاريخ التولد">
-<label>عنوان السكن الحالي</label> <input type="text" name="عنوان السكن الحالي">
-<label>أقرب نقطة دالة</label> <input type="text" name="أقرب نقطة دالة">
-<label>أمر التعيين</label> <input type="text" name="أمر التعيين">
-<label>تاريخ أمر التعيين</label> <input type="date" name="تاريخ أمر التعيين">
-<label>أمر الترقية</label> <input type="text" name="أمر الترقية">
-<label>تاريخ أمر الترقية</label> <input type="date" name="تاريخ أمر الترقية">
-<label>اسم المختار</label> <input type="text" name="اسم المختار">
-<label>رقم الهاتف</label> <input type="tel" name="رقم الهاتف">
+<label>الرتبة</label> 
+<input type="text" name="entry.2036494793" required>
+
+<label>الرقم الإحصائي</label> 
+<input type="text" name="entry.1481585250" required>
+
+<label>الصنف</label> 
+<input type="text" name="entry.1594242636" required>
+
+<label>الاسم الكامل واللقب</label> 
+<input type="text" name="entry.180295831" required>
+
+<label>اسم الأم الثلاثي</label> 
+<input type="text" name="entry.1691230009">
+
+<label>اسم الزوجة</label> 
+<input type="text" name="entry.1114515286">
+
+<label>عدد الأطفال</label> 
+<input type="number" name="entry.607421160">
+
+<label>محل الولادة</label> 
+<input type="text" name="entry.1045952953" required>
+
+<label>تاريخ التولد</label> 
+<input type="date" name="entry.396347065" required>
+
+<label>عنوان السكن الحالي</label> 
+<input type="text" name="entry.1425126860" required>
+
+<label>أقرب نقطة دالة</label> 
+<input type="text" name="entry.209675200" required>
+
+<label>أمر التعيين</label> 
+<input type="text" name="entry.2078696882" required>
+
+<label>تاريخ أمر التعيين</label> 
+<input type="date" name="entry.1643445831" required>
+
+<label>أمر آخر ترقية</label> 
+<input type="text" name="entry.1610427387" required>
+
+<label>تاريخ أمر الترقية</label> 
+<input type="date" name="entry.154562092" required>
+
+<label>اسم المختار</label> 
+<input type="text" name="entry.367098677" required>
+
+<label>رقم الهاتف</label> 
+<input type="tel" name="entry.1189332204" required>
 
 <button type="button" class="edit" onclick="enableEdit()">✏️ تعديل الاستمارة</button>
 <button type="button" class="print" onclick="window.print()">🖨️ طباعة الاستمارة</button>
@@ -54,19 +86,17 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
 </form>
 </div>
 
-<script>
-// ضع الرابط الجديد المستخرج من خطوة الـ Deploy هنا بدقة
-const SCRIPT_URL = "https://google.com";
+<!-- آيفريم مخفي لاستقبال رد جوجل ومنع فتح صفحة جوجل القبيحة عند الإرسال -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { handleResponse(); }"></iframe>
 
+<script>
+let submitted = false;
 let serial = Number(localStorage.getItem("serial") || 1);
 document.getElementById("serial").textContent = serial;
-document.getElementById("hidden_serial").value = serial;
 
 function updateDateTime(){
     const now = new Date();
-    const timeString = now.toLocaleString("ar-IQ");
-    document.getElementById("datetime").textContent = timeString;
-    document.getElementById("hidden_datetime").value = timeString;
+    document.getElementById("datetime").textContent = now.toLocaleString("ar-IQ");
 }
 updateDateTime();
 setInterval(updateDateTime, 1000);
@@ -76,39 +106,20 @@ function enableEdit(){
     alert("الاستمارة أصبحت قابلة للتعديل");
 }
 
-document.getElementById("myForm").addEventListener("submit", function(e){
-    e.preventDefault();
-    updateDateTime();
-    
-    const btn = document.getElementById("submitBtn");
-    btn.disabled = true;
-    btn.textContent = "جاري الإرسال الآن...";
+function handleResponse() {
+    alert("✅ تم إرسال الاستمارة بنجاح إلى قاعدة بيانات الطبابة وتحديث الجدول!");
+    serial++;
+    localStorage.setItem("serial", serial);
+    document.getElementById("serial").textContent = serial;
+    document.getElementById("myForm").reset();
+    submitted = false;
+    document.getElementById("submitBtn").disabled = false;
+    document.getElementById("submitBtn").textContent = "📤 إرسال الاستمارة";
+}
 
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key)=>{ data[key] = value; });
-
-    // استخدام طريقة الإرسال الكلاسيكية لضمان عبور البيانات بدون قيود CORS
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify(data)
-    }).then(() => {
-        alert("✅ تم إرسال الاستمارة بنجاح! تفقد الجدول الآن.");
-        serial++;
-        localStorage.setItem("serial", serial);
-        form.reset();
-        document.getElementById("serial").textContent = serial;
-        document.getElementById("hidden_serial").value = serial;
-        updateDateTime();
-    }).catch(error => {
-        alert("❌ حدث خطأ في الاتصال");
-        console.error(error);
-    }).finally(() => {
-        btn.disabled = false;
-        btn.textContent = "📤 إرسال الاستمارة";
-    });
+document.getElementById("myForm").addEventListener("submit", function() {
+    document.getElementById("submitBtn").disabled = true;
+    document.getElementById("submitBtn").textContent = "جاري الحفظ والارسال...";
 });
 </script>
 </body>
