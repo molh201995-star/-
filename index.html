@@ -122,11 +122,17 @@ button{
 <label>رقم الهاتف</label>
 <input type="tel" name="رقم الهاتف">
 
-<button type="button" class="edit" onclick="enableEdit()">✏️ تعديل الاستمارة</button>
+<button type="button" class="edit" onclick="enableEdit()">
+✏️ تعديل الاستمارة
+</button>
 
-<button type="button" class="print" onclick="window.print()">🖨️ طباعة الاستمارة</button>
+<button type="button" class="print" onclick="window.print()">
+🖨️ طباعة الاستمارة
+</button>
 
-<button type="submit" class="send">📤 إرسال الاستمارة</button>
+<button type="submit" class="send">
+📤 إرسال الاستمارة
+</button>
 
 </form>
 
@@ -134,23 +140,34 @@ button{
 
 <script>
 
+// رابط الويب الجديد
 const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbxbPTejiU2TbIUs6c317-vlJfb8qwLezaj3vBLF8TXgVckKovVdcVkxXeAH_7k8CUqz/exec";
+"https://script.google.com/macros/s/AKfycbwgndQNxTXrUdzPjDr74lX0eqIYZFE5_DfFWpvRQ5oEDGJ9O51kATwR_SIUXBqj84z3/exec";
 
-let serial = localStorage.getItem("serial") || 1;
+
+// التسلسل المحفوظ في الجهاز
+let serial = Number(localStorage.getItem("serial") || 1);
 
 document.getElementById("serial").textContent = serial;
 
+
+// التاريخ والوقت
 function updateDateTime(){
+
     const now = new Date();
+
     document.getElementById("datetime").textContent =
         now.toLocaleString("ar-IQ");
 }
 
 updateDateTime();
+
 setInterval(updateDateTime,1000);
 
+
+// تعديل الاستمارة
 function enableEdit(){
+
     document.querySelectorAll("input").forEach(input=>{
         input.disabled = false;
     });
@@ -158,49 +175,67 @@ function enableEdit(){
     alert("الاستمارة أصبحت قابلة للتعديل");
 }
 
-document.getElementById("myForm").addEventListener("submit", async function(e){
 
-    e.preventDefault();
+// إرسال البيانات
+document.getElementById("myForm").addEventListener(
+    "submit",
+    async function(e){
 
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = {};
+        e.preventDefault();
 
-    formData.forEach((value,key)=>{
-        data[key] = value;
-    });
+        const form = e.target;
+        const formData = new FormData(form);
+        const data = {};
 
-    try{
+        formData.forEach((value,key)=>{
+            data[key] = value;
+        });
 
-        await fetch(
-            SCRIPT_URL,
-            {
-                method:"POST",
-                mode:"no-cors",
-                headers:{
-                    "Content-Type":"text/plain;charset=utf-8"
-                },
-                body:JSON.stringify(data)
-            }
-        );
 
-        alert("✅ تم إرسال الاستمارة بنجاح");
+        try{
 
-        serial++;
-        localStorage.setItem("serial",serial);
+            await fetch(
+                SCRIPT_URL,
+                {
+                    method:"POST",
+                    mode:"no-cors",
+                    headers:{
+                        "Content-Type":"text/plain;charset=utf-8"
+                    },
+                    body:JSON.stringify(data)
+                }
+            );
 
-        form.reset();
 
-        document.getElementById("serial").textContent = serial;
+            alert("✅ تم إرسال الاستمارة بنجاح");
 
-    }catch(error){
 
-        alert("❌ حدث خطأ أثناء الإرسال");
+            serial++;
 
-        console.log(error);
+            localStorage.setItem(
+                "serial",
+                serial
+            );
+
+
+            form.reset();
+
+
+            document.getElementById(
+                "serial"
+            ).textContent = serial;
+
+
+        }catch(error){
+
+            alert("❌ حدث خطأ أثناء الإرسال");
+
+            console.log(error);
+
+        }
+
     }
-
-});
+);
 
 </script>
 
