@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>استمارة المعلومات الشخصية</title>
 
 <style>
@@ -59,4 +60,577 @@ body {
 }
 
 .form-group {
-    margin
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #0d6efd;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.info-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    flex: 1;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+button {
+    flex: 1;
+    border: none;
+    padding: 14px;
+    border-radius: 9px;
+    font-size: 17px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background: #ffc107;
+    color: #222;
+}
+
+.print-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.submit-btn {
+    background: #198754;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.footer {
+    text-align: center;
+    color: #777;
+    font-size: 13px;
+    padding: 20px;
+}
+
+@media (max-width: 600px) {
+
+    .form-box {
+        padding: 18px;
+    }
+
+    .header h1 {
+        font-size: 21px;
+    }
+
+    .info-box {
+        flex-direction: column;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+}
+
+/* تنسيق الطباعة */
+@media print {
+
+    body {
+        background: white;
+    }
+
+    .header {
+        background: white;
+        color: black;
+        border-bottom: 2px solid black;
+    }
+
+    .form-box {
+        box-shadow: none;
+        border: none;
+    }
+
+    .buttons,
+    .footer {
+        display: none;
+    }
+
+    input,
+    textarea,
+    select {
+        border: 1px solid #999;
+    }
+
+    .serial {
+        color: black;
+        background: white;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>استمارة المعلومات الشخصية</h1>
+
+    <p>يرجى إدخال المعلومات بشكل صحيح</p>
+
+</div>
+
+
+<div class="container">
+
+<div class="form-box">
+
+
+<div class="serial">
+
+    الرقم التسلسلي:
+    <span id="serialNumber"></span>
+
+</div>
+
+
+<div class="info-box">
+
+    <div class="info-item">
+        📅 التاريخ:
+        <strong id="displayDate">--</strong>
+    </div>
+
+    <div class="info-item">
+        🕐 الوقت:
+        <strong id="displayTime">--</strong>
+    </div>
+
+</div>
+
+
+<form
+    id="myForm"
+    action="https://formspree.io/f/xeaoqdpo"
+    method="POST"
+>
+
+
+<input
+    type="hidden"
+    name="الرقم التسلسلي"
+    id="serialInput"
+>
+
+
+<input
+    type="hidden"
+    name="تاريخ الإرسال"
+    id="dateInput"
+>
+
+
+<input
+    type="hidden"
+    name="وقت الإرسال"
+    id="timeInput"
+>
+
+
+<input
+    type="hidden"
+    name="_subject"
+    value="استمارة معلومات شخصية جديدة"
+>
+
+
+<div class="form-group">
+
+<label>الرتبة</label>
+
+<input
+    type="text"
+    name="الرتبة"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>الرقم الإحصائي</label>
+
+<input
+    type="text"
+    name="الرقم الإحصائي"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>الصنف</label>
+
+<input
+    type="text"
+    name="الصنف"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>الاسم الكامل واللقب</label>
+
+<input
+    type="text"
+    name="الاسم الكامل واللقب"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>اسم الأم الثلاثي</label>
+
+<input
+    type="text"
+    name="اسم الأم الثلاثي"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>اسم الزوجة</label>
+
+<input
+    type="text"
+    name="اسم الزوجة"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>عدد الأطفال</label>
+
+<input
+    type="number"
+    name="عدد الأطفال"
+    min="0"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>محل الولادة</label>
+
+<input
+    type="text"
+    name="محل الولادة"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>تاريخ التولد</label>
+
+<input
+    type="date"
+    name="تاريخ التولد"
+    required
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>عنوان السكن الحالي</label>
+
+<textarea
+    name="عنوان السكن الحالي"
+    required
+></textarea>
+
+</div>
+
+
+<div class="form-group">
+
+<label>أقرب نقطة دالة</label>
+
+<input
+    type="text"
+    name="أقرب نقطة دالة"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>أمر التعيين</label>
+
+<input
+    type="text"
+    name="أمر التعيين"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>تاريخ أمر التعيين</label>
+
+<input
+    type="date"
+    name="تاريخ أمر التعيين"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>أمر الترقية</label>
+
+<input
+    type="text"
+    name="أمر الترقية"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>تاريخ أمر الترقية</label>
+
+<input
+    type="date"
+    name="تاريخ أمر الترقية"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>اسم المختار</label>
+
+<input
+    type="text"
+    name="اسم المختار"
+>
+
+</div>
+
+
+<div class="form-group">
+
+<label>رقم الهاتف</label>
+
+<input
+    type="tel"
+    name="رقم الهاتف"
+>
+
+</div>
+
+
+<div class="buttons">
+
+
+<button
+    type="button"
+    class="edit-btn"
+    onclick="enableEditing()"
+>
+    ✏️ تعديل الاستمارة
+</button>
+
+
+<button
+    type="button"
+    class="print-btn"
+    onclick="window.print()"
+>
+    🖨️ طباعة الاستمارة
+</button>
+
+
+<button
+    type="submit"
+    class="submit-btn"
+>
+    📤 إرسال الاستمارة
+</button>
+
+
+</div>
+
+
+</form>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+    نظام الاستمارات الإلكترونية
+
+</div>
+
+
+<script>
+
+/* الرقم التسلسلي */
+
+let serial = localStorage.getItem("formSerial");
+
+if (!serial) {
+
+    serial = 1;
+
+} else {
+
+    serial = parseInt(serial) + 1;
+
+}
+
+localStorage.setItem("formSerial", serial);
+
+document.getElementById("serialNumber").textContent = serial;
+
+document.getElementById("serialInput").value = serial;
+
+
+/* التاريخ والوقت */
+
+function updateDateTime() {
+
+    const now = new Date();
+
+    const date =
+        now.getFullYear() +
+        "/" +
+        String(now.getMonth() + 1).padStart(2, "0") +
+        "/" +
+        String(now.getDate()).padStart(2, "0");
+
+    const time =
+        String(now.getHours()).padStart(2, "0") +
+        ":" +
+        String(now.getMinutes()).padStart(2, "0") +
+        ":" +
+        String(now.getSeconds()).padStart(2, "0");
+
+
+    document.getElementById("displayDate").textContent = date;
+
+    document.getElementById("displayTime").textContent = time;
+
+    document.getElementById("dateInput").value = date;
+
+    document.getElementById("timeInput").value = time;
+
+}
+
+
+/* تحديث مستمر للوقت */
+
+updateDateTime();
+
+setInterval(updateDateTime, 1000);
+
+
+/* عند الضغط على إرسال */
+
+document.getElementById("myForm").addEventListener(
+    "submit",
+    function() {
+
+        updateDateTime();
+
+    }
+);
+
+
+/* زر التعديل */
+
+function enableEditing() {
+
+    const inputs = document.querySelectorAll(
+        "#myForm input, #myForm select, #myForm textarea"
+    );
+
+    inputs.forEach(function(input) {
+
+        input.disabled = false;
+
+    });
+
+    alert("✏️ يمكنك الآن تعديل المعلومات");
+
+}
+
+</script>
+
+</body>
+    </html>
