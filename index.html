@@ -26,7 +26,9 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
     التاريخ والوقت: <span id="datetime"></span>
 </div>
 
-<form id="myForm">
+<!-- تم تغيير طريقة الإرسال هنا لتكون مباشرة وإجبارية للسيرفر بدون تعقيدات البرمجة المخفية -->
+<form id="myForm" action="ضع_الرابط_هنا" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
+
 <input type="hidden" name="التسلسل" id="hidden_serial">
 <input type="hidden" name="تاريخ ووقت الإرسال" id="hidden_datetime">
 
@@ -54,10 +56,11 @@ button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-s
 </form>
 </div>
 
-<script>
-// ⚠️ ضع هنا رابط الـ Web App الجديد والنشط الذي استخرجته للتو
-const SCRIPT_URL = "ضع_الرابط_الجديد_هنا";
+<!-- نافذة مخفية تمنع المتصفح من فتح صفحة بيضاء عند الإرسال وتجبره على البقاء في الاستمارة -->
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { handleResponse(); }"></iframe>
 
+<script>
+let submitted = false;
 let serial = Number(localStorage.getItem("serial") || 1);
 document.getElementById("serial").textContent = serial;
 document.getElementById("hidden_serial").value = serial;
@@ -76,41 +79,22 @@ function enableEdit(){
     alert("الاستمارة أصبحت قابلة للتعديل");
 }
 
-document.getElementById("myForm").addEventListener("submit", function(e){
-    e.preventDefault();
+function handleResponse() {
+    alert("✅ تم إرسال الاستمارة بنجاح وظهرت في جدول البيانات الرئيسي!");
+    serial++;
+    localStorage.setItem("serial", serial);
+    document.getElementById("serial").textContent = serial;
+    document.getElementById("myForm").reset();
+    submitted = false;
+    document.getElementById("submitBtn").disabled = false;
+    document.getElementById("submitBtn").textContent = "📤 إرسال الاستمارة";
     updateDateTime();
-    
-    const btn = document.getElementById("submitBtn");
-    btn.disabled = true;
-    btn.textContent = "جاري الحفظ والإرسال لوحدة الطبابة...";
+}
 
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key)=>{ data[key] = value; });
-
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors", // لتجنب حظر CORS نهائياً من المتصفح
-        headers: {
-            "Content-Type": "text/plain"
-        },
-        body: JSON.stringify(data)
-    }).then(() => {
-        alert("✅ تم حفظ الاستمارة بنجاح وظهرت في جدول البيانات الرئيسي!");
-        serial++;
-        localStorage.setItem("serial", serial);
-        form.reset();
-        document.getElementById("serial").textContent = serial;
-        document.getElementById("hidden_serial").value = serial;
-        updateDateTime();
-    }).catch(error => {
-        alert("❌ فشل الاتصال بالسيرفر");
-        console.error(error);
-    }).finally(() => {
-        btn.disabled = false;
-        btn.textContent = "📤 إرسال الاستمارة";
-    });
+document.getElementById("myForm").addEventListener("submit", function() {
+    updateDateTime();
+    document.getElementById("submitBtn").disabled = true;
+    document.getElementById("submitBtn").textContent = "جاري الحفظ والارسال...";
 });
 </script>
 </body>
