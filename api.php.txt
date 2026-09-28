@@ -1,125 +1,78 @@
-<?php
+document.getElementById("myForm").addEventListener("submit", async function(e) {
 
-header("Content-Type: application/json; charset=UTF-8");
+    e.preventDefault();
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    echo json_encode([
-        "success" => false,
-        "message" => "يسمح بطلب POST فقط"
-    ], JSON_UNESCAPED_UNICODE);
-    exit;
-}
+    updateDateTime();
 
-/*
-|--------------------------------------------------------------------------
-| رابط Google Apps Script
-|--------------------------------------------------------------------------
-*/
+    const form = e.target;
+    const button = document.getElementById("submitBtn");
 
-$googleScriptUrl = "https://script.google.com/macros/s/AKfycbz_-zVzd_fEkCtKUE_f8fU7uX6dXMIliBt_pdjBlN3XU0UVG-PlrvM9sKGRbarp33B8/exec";
+    button.disabled = true;
+    button.textContent = "⏳ جاري الحفظ...";
 
+    try {
 
-/*
-|--------------------------------------------------------------------------
-| قراءة بيانات الاستمارة
-|--------------------------------------------------------------------------
-*/
+        // إرسال الاستمارة إلى api.php
+        const formData = new FormData(form);
 
-$data = $_POST;
+        const response = await fetch("api.php", {
+            method: "POST",
+            body: formData
+        });
 
+        // قراءة رد api.php
+        const result = await response.json();
 
-/*
-|--------------------------------------------------------------------------
-| التحقق
-|--------------------------------------------------------------------------
-*/
+        console.log("رد الخادم:", result);
 
-if (empty($data)) {
+        if (result.success === true) {
 
-    $json = file_get_contents("php://input");
+            alert("✅ " + result.message);
 
-    if (!empty($json)) {
-        $data = json_decode($json, true);
+            // زيادة التسلسل
+            serial++;
+
+            localStorage.setItem(
+                "serial",
+                serial
+            );
+
+            // تفريغ الاستمارة
+            form.reset();
+
+            // تحديث التسلسل
+            document.getElementById("serial")
+                .textContent = serial;
+
+            document.getElementById("hidden_serial")
+                .value = serial;
+
+            // تحديث التاريخ والوقت
+            updateDateTime();
+
+        } else {
+
+            alert(
+                "❌ لم يتم حفظ البيانات:\n\n" +
+                result.message
+            );
+        }
+
+    } catch (error) {
+
+        console.error("خطأ:", error);
+
+        alert(
+            "❌ حدث خطأ في الاتصال بـ api.php\n\n" +
+            error.message
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "📤 إرسال الاستمارة";
     }
-}
 
-if (empty($data)) {
-
-    echo json_encode([
-        "success" => false,
-        "message" => "لم تصل بيانات الاستمارة"
-    ], JSON_UNESCAPED_UNICODE);
-
-    exit;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| إرسال البيانات إلى Google Apps Script
-|--------------------------------------------------------------------------
-*/
-
-$ch = curl_init($googleScriptUrl);
-
-curl_setopt($ch, CURLOPT_POST, true);
-
-curl_setopt(
-    $ch,
-    CURLOPT_POSTFIELDS,
-    http_build_query($data)
-);
-
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-
-curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-
-
-$response = curl_exec($ch);
-
-$error = curl_error($ch);
-
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-curl_close($ch);
-
-
-/*
-|--------------------------------------------------------------------------
-| فحص النتيجة
-|--------------------------------------------------------------------------
-*/
-
-if ($error) {
-
-    echo json_encode([
-        "success" => false,
-        "message" => "خطأ في الاتصال: " . $error
-    ], JSON_UNESCAPED_UNICODE);
-
-    exit;
-}
-
-
-if ($httpCode >= 200 && $httpCode < 400) {
-
-    echo json_encode([
-        "success" => true,
-        "message" => "تم إرسال البيانات إلى جدول Google Sheets بنجاح"
-    ], JSON_UNESCAPED_UNICODE);
-
-    exit;
-}
-
-
-echo json_encode([
-    "success" => false,
-    "message" => "لم يتمكن الخادم من إرسال البيانات إلى Google Sheets",
-    "http_code" => $httpCode
-], JSON_UNESCAPED_UNICODE);
-
-?>
+});
