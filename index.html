@@ -30,16 +30,16 @@ function doPost(e) {
 
     return ContentService
       .createTextOutput(JSON.stringify({
-        success: true,
-        message: "تم حفظ البيانات بنجاح"
+        success: true
       }))
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
+
     return ContentService
       .createTextOutput(JSON.stringify({
         success: false,
-        message: "حدث خطأ أثناء حفظ البيانات"
+        error: error.toString()
       }))
       .setMimeType(ContentService.MimeType.JSON);
   }
