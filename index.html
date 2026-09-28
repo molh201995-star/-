@@ -10,40 +10,47 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
     button.disabled = true;
     button.textContent = "⏳ جاري الحفظ...";
 
-    const formData = new FormData(form);
-    const data = {};
-
-    formData.forEach((value, key) => {
-        data[key] = value;
-    });
-
     try {
 
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
+        const formData = new FormData(form);
+
+        const response = await fetch("api.php", {
             method: "POST",
-            body: JSON.stringify(data)
+            body: formData
         });
 
         const result = await response.json();
 
-        if (result.success) {
+        console.log("API:", result);
 
-            alert("✅ تم حفظ الاستمارة بنجاح");
+        if (result.success === true) {
+
+            alert("✅ " + result.message);
 
             serial++;
 
-            localStorage.setItem("serial", serial);
+            localStorage.setItem(
+                "serial",
+                serial
+            );
 
             form.reset();
 
-            document.getElementById("serial").textContent = serial;
-            document.getElementById("hidden_serial").value = serial;
+            document.getElementById("serial")
+                .textContent = serial;
+
+            document.getElementById("hidden_serial")
+                .value = serial;
 
             updateDateTime();
 
         } else {
 
-            alert("❌ لم يتم حفظ البيانات:\n" + result.message);
+            alert(
+                "❌ لم يتم الحفظ\n\n" +
+                result.message
+            );
+
         }
 
     } catch (error) {
@@ -51,14 +58,16 @@ document.getElementById("myForm").addEventListener("submit", async function(e) {
         console.error(error);
 
         alert(
-            "❌ تعذر الاتصال بخادم Google.\n" +
-            "تأكد من نشر Apps Script كـ Web App."
+            "❌ تعذر الاتصال بـ api.php\n\n" +
+            error.message
         );
 
     } finally {
 
         button.disabled = false;
-        button.textContent = "📤 إرسال الاستمارة";
+
+        button.textContent =
+            "📤 إرسال الاستمارة";
     }
 
 });
