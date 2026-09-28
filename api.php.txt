@@ -1,78 +1,275 @@
-document.getElementById("myForm").addEventListener("submit", async function(e) {
+<?php
 
-    e.preventDefault();
+header("Content-Type: application/json; charset=UTF-8");
 
-    updateDateTime();
 
-    const form = e.target;
-    const button = document.getElementById("submitBtn");
+/*
+==================================================
+رابط Google Apps Script
+==================================================
+*/
 
-    button.disabled = true;
-    button.textContent = "⏳ جاري الحفظ...";
+$googleScriptUrl =
+"https://script.google.com/macros/s/AKfycbz_-zVzd_fEkCtKUE_f8fU7uX6dXMIliBt_pdjBlN3XU0UVG-PlrvM9sKGRbarp33B8/exec";
 
-    try {
 
-        // إرسال الاستمارة إلى api.php
-        const formData = new FormData(form);
+/*
+==================================================
+التأكد من أن الطلب POST
+==================================================
+*/
 
-        const response = await fetch("api.php", {
-            method: "POST",
-            body: formData
-        });
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 
-        // قراءة رد api.php
-        const result = await response.json();
+    echo json_encode([
+        "success" => false,
+        "message" => "api.php يعمل، لكن يجب إرسال البيانات بطريقة POST"
+    ], JSON_UNESCAPED_UNICODE);
 
-        console.log("رد الخادم:", result);
+    exit;
+}
 
-        if (result.success === true) {
 
-            alert("✅ " + result.message);
+/*
+==================================================
+استقبال بيانات الاستمارة
+==================================================
+*/
 
-            // زيادة التسلسل
-            serial++;
+$data = $_POST;
 
-            localStorage.setItem(
-                "serial",
-                serial
-            );
 
-            // تفريغ الاستمارة
-            form.reset();
+/*
+==================================================
+التأكد من وصول البيانات
+==================================================
+*/
 
-            // تحديث التسلسل
-            document.getElementById("serial")
-                .textContent = serial;
+if (empty($data)) {
 
-            document.getElementById("hidden_serial")
-                .value = serial;
+    echo json_encode([
+        "success" => false,
+        "message" => "لم تصل بيانات من الاستمارة"
+    ], JSON_UNESCAPED_UNICODE);
 
-            // تحديث التاريخ والوقت
-            updateDateTime();
+    exit;
+}
 
-        } else {
 
-            alert(
-                "❌ لم يتم حفظ البيانات:\n\n" +
-                result.message
-            );
-        }
+/*
+==================================================
+تحويل البيانات إلى POST
+==================================================
+*/
 
-    } catch (error) {
+$postData =
+    http_build_query($data);
 
-        console.error("خطأ:", error);
 
-        alert(
-            "❌ حدث خطأ في الاتصال بـ api.php\n\n" +
-            error.message
-        );
+/*
+==================================================
+الاتصال بـ Google Apps Script
+==================================================
+*/
 
-    } finally {
+$ch = curl_init(
+    $googleScriptUrl
+);
 
-        button.disabled = false;
 
-        button.textContent =
-            "📤 إرسال الاستمارة";
+curl_setopt($ch, CURLOPT_POST, true);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_POSTFIELDS,
+    $postData
+);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_RETURNTRANSFER,
+    true
+);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_FOLLOWLOCATION,
+    true
+);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_MAXREDIRS,
+    5
+);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_CONNECTTIMEOUT,
+    15
+);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_TIMEOUT,
+    30
+);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_HTTPHEADER,
+    [
+        "Content-Type: application/x-www-form-urlencoded"
+    ]
+);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_SSL_VERIFYPEER,
+    true
+);
+
+
+curl_setopt(
+    $ch,
+    CURLOPT_SSL_VERIFYHOST,
+    2
+);
+
+
+/*
+==================================================
+تنفيذ الطلب
+==================================================
+*/
+
+$response =
+    curl_exec($ch);
+
+
+$curlError =
+    curl_error($ch);
+
+
+$httpCode =
+    curl_getinfo(
+        $ch,
+        CURLINFO_HTTP_CODE
+    );
+
+
+curl_close($ch);
+
+
+/*
+==================================================
+فحص خطأ الاتصال
+==================================================
+*/
+
+if ($response === false) {
+
+    echo json_encode([
+        "success" => false,
+        "message" =>
+            "فشل الاتصال بـ Google Apps Script",
+        "error" => $curlError
+    ], JSON_UNESCAPED_UNICODE);
+
+    exit;
+}
+
+
+/*
+==================================================
+قراءة رد Google
+==================================================
+*/
+
+$googleResult =
+    json_decode(
+        $response,
+        true
+    );
+
+
+/*
+==================================================
+إذا رجع Google JSON
+==================================================
+*/
+
+if (is_array($googleResult)) {
+
+    if (
+        isset($googleResult["success"]) &&
+        $googleResult["success"] === true
+    ) {
+
+        echo json_encode([
+            "success" => true,
+            "message" =>
+                "تم حفظ البيانات في Google Sheets بنجاح"
+        ], JSON_UNESCAPED_UNICODE);
+
+        exit;
     }
 
-});
+
+    echo json_encode([
+        "success" => false,
+        "message" =>
+            $googleResult["message"]
+            ?? "Google Apps Script لم يحفظ البيانات"
+    ], JSON_UNESCAPED_UNICODE);
+
+    exit;
+}
+
+
+/*
+==================================================
+رد غير JSON
+==================================================
+*/
+
+if (
+    $httpCode >= 200 &&
+    $httpCode < 400
+) {
+
+    echo json_encode([
+        "success" => true,
+        "message" =>
+            "تم إرسال البيانات إلى Google Apps Script"
+    ], JSON_UNESCAPED_UNICODE);
+
+    exit;
+}
+
+
+/*
+==================================================
+خطأ نهائي
+==================================================
+*/
+
+echo json_encode([
+    "success" => false,
+    "message" =>
+        "فشل إرسال البيانات",
+    "http_code" =>
+        $httpCode,
+    "response" =>
+        $response
+], JSON_UNESCAPED_UNICODE);
+
+?>
