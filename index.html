@@ -1,125 +1,46 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>استمارة المعلومات الشخصية</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f2f2f2;margin:0;padding:15px;}
-.container{max-width:700px;margin:auto;background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px #bbb;}
-h1{text-align:center;margin-bottom:10px;}
-.info{text-align:center;margin-bottom:20px;font-weight:bold;}
-label{display:block;margin-top:12px;font-weight:bold;}
-input{width:100%;box-sizing:border-box;padding:11px;margin-top:5px;border:1px solid #aaa;border-radius:7px;font-size:16px;}
-button{width:100%;padding:13px;margin-top:15px;border:0;border-radius:8px;font-size:17px;cursor:pointer;}
-.edit{background:#ffc107;}
-.print{background:#17a2b8;color:white;}
-.send{background:#28a745;color:white;}
-</style>
-</head>
-<body>
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp
+      .openById("1WxWoyPejiqcF-SYtu2J9XjAdFfcoyeoYCpFdBLTCd0w")
+      .getSheetById(1760527420);
 
-<div class="container">
-<h1>استمارة المعلومات الشخصية</h1>
-<div class="info">
-    التسلسل: <span id="serial">1</span><br>
-    التاريخ والوقت: <span id="datetime"></span>
-</div>
+    const data = JSON.parse(e.postData.contents);
 
-<form id="myForm">
-<input type="hidden" name="التسلسل" id="hidden_serial">
-<input type="hidden" name="تاريخ ووقت الإرسال" id="hidden_datetime">
+    sheet.appendRow([
+      data["التسلسل"] || "",
+      data["تاريخ ووقت الإرسال"] || "",
+      data["الرتبة"] || "",
+      data["الرقم الإحصائي"] || "",
+      data["الصنف"] || "",
+      data["الاسم الكامل واللقب"] || "",
+      data["اسم الأم الثلاثي"] || "",
+      data["اسم الزوجة"] || "",
+      data["عدد الأطفال"] || "",
+      data["محل الولادة"] || "",
+      data["تاريخ التولد"] || "",
+      data["عنوان السكن الحالي"] || "",
+      data["أقرب نقطة دالة"] || "",
+      data["أمر التعيين"] || "",
+      data["تاريخ أمر التعيين"] || "",
+      data["أمر الترقية"] || "",
+      data["تاريخ أمر الترقية"] || "",
+      data["اسم المختار"] || "",
+      data["رقم الهاتف"] || ""
+    ]);
 
-<label>الرتبة</label> <input type="text" name="الرتبة" required>
-<label>الرقم الإحصائي</label> <input type="text" name="الرقم الإحصائي" required>
-<label>الصنف</label> <input type="text" name="الصنف">
-<label>الاسم الكامل واللقب</label> <input type="text" name="الاسم الكامل واللقب" required>
-<label>اسم الأم الثلاثي</label> <input type="text" name="اسم الأم الثلاثي">
-<label>اسم الزوجة</label> <input type="text" name="اسم الزوجة">
-<label>عدد الأطفال</label> <input type="number" name="عدد الأطفال">
-<label>محل الولادة</label> <input type="text" name="محل الولادة">
-<label>تاريخ التولد</label> <input type="date" name="تاريخ التولد">
-<label>عنوان السكن الحالي</label> <input type="text" name="عنوان السكن الحالي">
-<label>أقرب نقطة دالة</label> <input type="text" name="أقرب نقطة دالة">
-<label>أمر التعيين</label> <input type="text" name="أمر التعيين">
-<label>تاريخ أمر التعيين</label> <input type="date" name="تاريخ أمر التعيين">
-<label>أمر الترقية</label> <input type="text" name="أمر الترقية">
-<label>تاريخ أمر الترقية</label> <input type="date" name="تاريخ أمر الترقية">
-<label>اسم المختار</label> <input type="text" name="اسم المختار">
-<label>رقم الهاتف</label> <input type="tel" name="رقم الهاتف">
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        success: true,
+        message: "تم حفظ البيانات بنجاح"
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
 
-<button type="button" class="edit" onclick="enableEdit()">✏️ تعديل الاستمارة</button>
-<button type="button" class="print" onclick="window.print()">🖨️ طباعة الاستمارة</button>
-<button type="submit" class="send" id="submitBtn">📤 إرسال الاستمارة</button>
-</form>
-</div>
-
-<script>
-// تم تغيير الرابط ليكون اسم الملف مباشرة لأن الاستمارة أصبحت داخل السيرفر نفسه
-const PHP_URL = "send.php";
-
-let serial = Number(localStorage.getItem("serial") || 1);
-document.getElementById("serial").textContent = serial;
-document.getElementById("hidden_serial").value = serial;
-
-function updateDateTime(){
-    const now = new Date();
-    const timeString = now.toLocaleString("ar-IQ");
-    document.getElementById("datetime").textContent = timeString;
-    document.getElementById("hidden_datetime").value = timeString;
+  } catch (error) {
+    return ContentService
+      .createTextOutput(JSON.stringify({
+        success: false,
+        message: "حدث خطأ أثناء حفظ البيانات"
+      }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
 }
-updateDateTime();
-setInterval(updateDateTime, 1000);
-
-function enableEdit(){
-    document.querySelectorAll("input").forEach(input=>{ input.disabled = false; });
-    alert("الاستمارة أصبحت قابلة للتعديل");
-}
-
-document.getElementById("myForm").addEventListener("submit", async function(e){
-    e.preventDefault();
-    updateDateTime();
-    
-    const btn = document.getElementById("submitBtn");
-    btn.disabled = true;
-    btn.textContent = "جاري الحفظ الفوري بالخادم...";
-
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = {};
-    formData.forEach((value, key)=>{ data[key] = value; });
-
-    try {
-        const response = await fetch(PHP_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            alert("✅ " + result.message);
-            serial++;
-            localStorage.setItem("serial", serial);
-            form.reset();
-            document.getElementById("serial").textContent = serial;
-            document.getElementById("hidden_serial").value = serial;
-            updateDateTime();
-        } else {
-            alert("❌ " + result.message);
-        }
-
-    } catch (error) {
-        alert("❌ حدث خطأ داخلي. تأكد أن ملف send.php موجود بجانب هذا الملف في htdocs.");
-        console.error(error);
-    } finally {
-        btn.disabled = false;
-        btn.textContent = "📤 إرسال الاستمارة";
-    }
-});
-</script>
-</body>
-</html>
